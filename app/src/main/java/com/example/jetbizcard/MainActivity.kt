@@ -1,0 +1,173 @@
+package com.example.jetbizcard
+
+import android.nfc.Tag
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.fontResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.jetbizcard.ui.theme.JetBizCardTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetBizCardTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    CreateBizCard()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
+}
+
+@Composable
+fun CreateBizCard() {
+    Surface(
+        modifier = Modifier.fillMaxSize(), color = Color(0xFFF8F9EC)
+    ) {
+
+        Card(
+            modifier = Modifier
+                .width(200.dp)
+                .height(390.dp)
+                .padding(12.dp),
+            shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            backgroundColor = Color(0xFF89CFF0),
+            elevation = 4.dp
+
+        ) {
+            Column(
+                modifier = Modifier.height(300.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                `Create image profile`()
+                Divider()
+                CreateInfo()
+                Button(onClick = {
+                    Log.d(
+                        "clicked", "CreateBizCard: clicked"
+                    )
+                }) {
+                    Text(
+                        text = "Portfolio",
+                        style = MaterialTheme.typography.button
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Content() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(5.dp),
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(3.dp)
+                .fillMaxSize(),
+            shape = RoundedCornerShape(corner = CornerSize(6.dp)),
+            border = BorderStroke(width = 2.dp, color = Color.LightGray)
+        ) {
+            Portfolio(data = listOf("Project 1", "Project 2", "Project 3"))
+        }
+    }
+}
+
+@Composable
+fun Portfolio(data: List<String>) {
+
+}
+
+@Composable
+private fun CreateInfo() {
+    Column(
+        modifier = Modifier
+            .padding(5.dp),
+    ) {
+        Text(
+            text = "Tejaswi Bhagat",
+            fontWeight = FontWeight.ExtraBold,
+            color = Color(0xFFC19A6B),
+            fontSize = 27.sp,
+            textAlign = TextAlign.Center
+
+        )
+        Text(
+            text = "Android composer Programmer",
+            modifier = Modifier.padding(3.dp),
+            color = Color(0xFFC19A6B)
+        )
+
+        Text(
+            text = "tejaswibhagat2002@yahoo.com",
+            modifier = Modifier.padding(3.dp),
+            color = Color(0xFFC19A6B)
+        )
+    }
+}
+
+@Composable
+private fun `Create image profile`(modifier: Modifier = Modifier) {
+    Surface(
+        modifier = Modifier
+            .size(154.dp)
+            .padding(5.dp),
+        shape = CircleShape,
+        border = BorderStroke(0.5.dp, color = Color.LightGray),
+        elevation = 4.dp,
+        color = Color.White
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.img),
+            contentDescription = "Profile Image",
+            modifier = Modifier.size(135.dp),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    JetBizCardTheme {
+        CreateBizCard()
+    }
+}
