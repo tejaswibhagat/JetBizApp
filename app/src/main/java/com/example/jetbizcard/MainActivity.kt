@@ -9,14 +9,19 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.fontResource
@@ -52,6 +57,9 @@ fun Greeting(name: String) {
 
 @Composable
 fun CreateBizCard() {
+    val buttonClickedState= remember {
+        mutableStateOf(false)
+    }
     Surface(
         modifier = Modifier.fillMaxSize(), color = Color(0xFFF8F9EC)
     ) {
@@ -75,14 +83,17 @@ fun CreateBizCard() {
                 Divider()
                 CreateInfo()
                 Button(onClick = {
-                    Log.d(
-                        "clicked", "CreateBizCard: clicked"
-                    )
+                    buttonClickedState.value = !buttonClickedState.value
                 }) {
                     Text(
                         text = "Portfolio",
                         style = MaterialTheme.typography.button
                     )
+                }
+                if(buttonClickedState.value){
+                    Content()
+                }else{
+                    Box{}
                 }
             }
 
@@ -103,7 +114,8 @@ fun Content() {
                 .padding(3.dp)
                 .fillMaxSize(),
             shape = RoundedCornerShape(corner = CornerSize(6.dp)),
-            border = BorderStroke(width = 2.dp, color = Color.LightGray)
+            border = BorderStroke(width = 2.dp, color = Color.LightGray),
+            color = Color(0xFFC19A6B)
         ) {
             Portfolio(data = listOf("Project 1", "Project 2", "Project 3"))
         }
@@ -112,7 +124,29 @@ fun Content() {
 
 @Composable
 fun Portfolio(data: List<String>) {
+        LazyColumn{
+            items(data){
+                    item ->
+                Card(modifier = Modifier
+                    .padding(13.dp)
+                    .fillParentMaxWidth(),
+                    shape = RectangleShape,
+                    elevation = 4.dp
+                ) {
+                    Row(modifier = Modifier
+                        .padding(8.dp)
+                        .background(MaterialTheme.colors.surface)
+                        .padding(7.dp)) {
+                        `Create image profile`(modifier = Modifier.size(100.dp))
+                        Column(modifier = Modifier.padding(7.dp).align(alignment = Alignment.CenterVertically)) {
 
+                            Text(text = item, fontWeight = FontWeight.Bold)
+                            Text(text = "A great project", style = MaterialTheme.typography.body2)
+                        }
+                    }
+                }
+            }
+        }
 }
 
 @Composable
